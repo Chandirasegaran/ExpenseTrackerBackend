@@ -23,9 +23,10 @@ public class ExpenseService {
         return expenses.stream().filter(t -> t.getId()==(id)).findFirst().orElse(new Expenses());
     }
 
-    public Object getExpenses() {
+    public List<Expenses> getAllExpenses() {
         return repo.findAll();
     }
+
 
     public void deleteExpense(int id) {
         repo.deleteById(id);
@@ -40,16 +41,21 @@ public class ExpenseService {
         return repo.save(expenses);
     }
 
-
-
-    public Expenses getExpenseByDate(Date date) {
-        List<Expenses> expenses=repo.findAll();
-        return expenses.stream().filter(t -> t.getDate().equals(date)).findFirst().orElse(new Expenses());
+    public List<Expenses> getExpensesByEmail(String email) {
+        return repo.findByUserEmail(email);
     }
 
-    public Expenses getExpenseByMonth(Date date) {
-        List<Expenses> expenses=repo.findAll();
-        return expenses.stream().filter(t -> t.getDate().getMonth()==date.getMonth()).findFirst().orElse(new Expenses());
+    public List<Expenses> getExpenseByDate(Date date) {
+        System.out.println(date);
+        System.out.println(repo.findByDate(date));
+        return repo.findByDate(date);
     }
 
+    public List<Expenses> getExpensesByDateAndEmail(Date date, String email) {
+        return repo.findByDateAndUserEmail(date, email);
+    }
+
+    public List<Expenses> getExpensesByMonthAndEmail(int month, int year, String email) {
+        return repo.findByMonthAndYearAndUserEmail(month, year, email);
+    }
 }

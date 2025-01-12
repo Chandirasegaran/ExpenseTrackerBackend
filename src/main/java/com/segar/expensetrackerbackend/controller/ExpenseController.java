@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @RequestMapping("api/expense")
 @RestController
@@ -38,14 +39,15 @@ public class ExpenseController {
         return ResponseEntity.ok(expenses);
     }
 
-    @GetMapping("/getExpenses")
-    public ResponseEntity<?> getExpenses() {
-        Expenses expenses = (Expenses) expenseService.getExpenses();
-        if(expenses == null) {
-            return new ResponseEntity<>("No Expense Found", HttpStatus.NOT_FOUND);
+    @GetMapping("/getAllExpenses")
+    public ResponseEntity<?> getAllExpenses() {
+        List<Expenses> expensesList = expenseService.getAllExpenses();
+        if (expensesList.isEmpty()) {
+            return new ResponseEntity<>("No Expenses Found", HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(expenses);
+        return ResponseEntity.ok(expensesList);
     }
+
 
     @DeleteMapping("/deleteExpense/{id}")
     public ResponseEntity<?> deleteExpense(@PathVariable("id") int id) {
@@ -68,22 +70,49 @@ public class ExpenseController {
         return ResponseEntity.ok(expenses2);
     }
 
-    @GetMapping("/getExpensebyDate/{date}")
-    public ResponseEntity<?> getExpenseByDate(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
-        Expenses expenses = expenseService.getExpenseByDate(date);
-        if(expenses.getItemName() == null) {
+    @GetMapping("/getExpensesByEmail/{email}")
+    public ResponseEntity<?> getExpensesByEmail(@PathVariable("email") String email) {
+        List<Expenses> expensesList = expenseService.getExpensesByEmail(email);
+        if (expensesList.isEmpty()) {
             return new ResponseEntity<>("No Expense Found", HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(expenses);
+        return ResponseEntity.ok(expensesList);
     }
 
-    @GetMapping("/getExpensebyMonth/{month}")
-    public ResponseEntity<?> getExpenseByMonth(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd" ) Date date) {
-        Expenses expenses = expenseService.getExpenseByMonth(date);
-        if(expenses.getItemName() == null) {
+
+    @GetMapping("/getExpenseByDate/{date}")
+    public ResponseEntity<?> getExpenseByDate(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+        System.out.println(date);
+        List<Expenses> expensesList = expenseService.getExpenseByDate(date);
+
+        if (expensesList.isEmpty()) {
             return new ResponseEntity<>("No Expense Found", HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(expenses);
+        return ResponseEntity.ok(expensesList);
     }
+
+    @GetMapping("/getExpensesByDateAndEmail/{date}/{email}")
+    public ResponseEntity<?> getExpensesByDateAndEmail(
+            @PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
+            @PathVariable("email") String email) {
+        List<Expenses> expensesList = expenseService.getExpensesByDateAndEmail(date, email);
+        if (expensesList.isEmpty()) {
+            return new ResponseEntity<>("No Expense Found", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(expensesList);
+    }
+
+    @GetMapping("/getExpensesByMonthAndEmail/{month}/{year}/{email}")
+    public ResponseEntity<?> getExpensesByMonthAndEmail(
+            @PathVariable("month") int month,
+            @PathVariable("year") int year,
+            @PathVariable("email") String email) {
+        List<Expenses> expensesList = expenseService.getExpensesByMonthAndEmail(month, year, email);
+        if (expensesList.isEmpty()) {
+            return new ResponseEntity<>("No Expense Found", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(expensesList);
+    }
+
 
 }
