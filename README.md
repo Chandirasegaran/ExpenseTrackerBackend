@@ -2,7 +2,7 @@
 
 ## Base URL
 ```
-http://localhost:8080/api/expense
+http://<server-host>:<port>/api/expense
 ```
 
 ## Endpoints
@@ -120,6 +120,35 @@ http://localhost:8080/api/expense
     - `200 OK`: A list of expenses for the specified month, year, and user email.
     - `404 Not Found`: "No Expense Found"
 
+
+---
+
+### User Module
+
+#### Base URL
+`http://<server-host>:<port>/api/user`
+
+#### Endpoints
+
+1. **GET /**
+  - **Description**: Root endpoint to check if the User module is running.
+  - **Response**:
+    - 200 OK: "Hello World! You are Successfully up and Running Expense Tracker Backend\nThis is User Module"
+
+2. **POST /addUser**
+  - **Description**: Add a new user.
+  - **Request Body**:
+    ```json
+    {
+        "name": "string",
+        "email": "string"
+    }
+    ```
+  - **Response**:
+    - 201 CREATED: Added user details.
+    - 500 INTERNAL SERVER ERROR: Error message.
+
+
 ---
 
 ## Notes
@@ -127,4 +156,3 @@ http://localhost:8080/api/expense
 2. The responses return HTTP status codes and relevant messages to indicate success or failure.
 3. Ensure that your database is properly seeded with test data to verify the endpoints.
 4. The API supports operations for creating, reading, updating, and deleting (CRUD) expenses, along with advanced filtering options by date, email, and month-year combinations.
-
